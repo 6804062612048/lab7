@@ -1,46 +1,54 @@
 #include <stdio.h>
-void numinarr(int arr[20][20], int m, int n);
-void shuffle(int arr[20][20], int m, int n);
-void printarr(int arr[20][20], int m, int n);
+#include <stdlib.h>
+#include <time.h>
 
-int main(){
-	int M,N;
-	int arr[20][20];
-	scanf("%d %d", &M, &N);
-	numinarr(arr, M, N);
-	shuffle(arr, M, N);
-	printarr(arr, M, N);
-	return 0;
+void initArray(int arr[20][20], int m, int n);
+void printArray(int arr[20][20], int m, int n);
+
+int main(void) {
+
+    int M, N;
+    int arr[20][20];
+
+    scanf("%d %d", &M, &N);
+
+    if (M <= 2 || N <= 2 || M >= 20 || N >= 20) {
+        printf("Invalid size\n");
+        return 0;
+    }
+
+    srand(time(NULL));
+
+    initArray(arr, M, N);
+    printArray(arr, M, N);
+
+    return 0;
 }
 
-void numinarr(int arr[20][20], int m, int n){
-	int num = 100;
-	for(int i=0; i<n; i++){
-		for (int j=0; j<n; j++){
-			arr[i][j]=num;
-			num++;
-		}
-	}
+void initArray(int arr[20][20], int m, int n) {
+
+    int used[201] = {0};
+
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+
+            int num;
+            do {
+                num = rand() % 101 + 100;
+            } while (used[num] == 1);
+
+            arr[i][j] = num;
+            used[num] = 1;
+        }
+    }
 }
 
-void shuffle(int arr[20][20], int m, int n){
-	for(int i=0; i<n; i++){
-		for (int j=0; j<n; j++){
-			int ni=(i*3+j*5)%m;
-			int nj=(j*7+i*2)%n;
+void printArray(int arr[20][20], int m, int n) {
 
-			int temp=arr[i][j];
-			arr[i][j]=arr[ni][nj];
-			arr[ni][nj]=temp;
-		}
-	}
-}
-
-void printarr(int arr[20][20], int m, int n){
-	for(int i=0; i<n; i++){
-		for (int j=0; j<n; j++){
-			printf("%d ",arr[i][j]);
-		}
-		printf("\n");
-	}
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            printf("%d ", arr[i][j]);
+        }
+        printf("\n");
+    }
 }
